@@ -18,13 +18,18 @@ if(NOT CNOID_MAJOR_VER)
 	set(CNOID_PATCH_VER 0)
 endif()
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
 execute_process(
     COMMAND cmake -E chdir ${CMAKE_CURRENT_BINARY_DIR} # go to build/rtm-ros-robotics/choreonoid
     make -f ${PROJECT_SOURCE_DIR}/Makefile.choreonoid # PROJECT_SOURCE_DIR=src/rtm-ros-robotics/choreonoid
     INSTALL_DIR=${CMAKE_INSTALL_PREFIX} # CMAKE_INSTALL_PREFIX=devel (for making choreonoid(binary) in devel/bin)
     MK_DIR=${mk_PREFIX}/share/mk # /opt/ros/hydro/share/mk
     PATCH_DIR=${PROJECT_SOURCE_DIR}
-		CNOID_VER=${CNOID_MAJOR_VER}.${CNOID_MINOR_VER}.${CNOID_PATCH_VER}
+    CNOID_VER=${CNOID_MAJOR_VER}.${CNOID_MINOR_VER}.${CNOID_PATCH_VER}
+    CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     installed.choreonoid
     RESULT_VARIABLE _make_failed)
 if (_make_failed)
